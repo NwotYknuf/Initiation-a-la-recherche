@@ -1,5 +1,6 @@
 *.mp3
 *.wav
-*/.vscode/*
-*/bin/*
-*/obj/*
+.vscode/*
+bin/*
+obj/*
+*.txt
