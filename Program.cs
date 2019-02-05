@@ -6,32 +6,30 @@ using System.Numerics;
 
 namespace musique{
 
-    class Program{
-
-        
+    class Program{        
 
         static void Main(string[] args){
 
-            string path = "./songs/";
-            string output = "./output/";
+            string dossier = "./songs/";
+            string sortie = "./output/";
             
-            Analyzer ana = new Analyzer(1.0);
+            Annaliseur ana = new Annaliseur(1.0);
 
-            string[] files = null;
-            files = Directory.GetFiles(path);
+            string[] fichiers = null;
+            fichiers = Directory.GetFiles(dossier);
             
-            foreach(string file in files){
-                 ana.loadSong(file);
-                 ana.computeFFT();
+            foreach(string fichier in fichiers){
+                 ana.chargeChanson(fichier);
+                 ana.calculFFT();
 
                 double[] rms = ana.computeRMS();
-                double[] zrc = ana.computeZCR();
+                double[] zrc = ana.calculZCR();
                 double[] rolloff = ana.computeRollOff(0.85);
-                double[] centroid = ana.computeSpectralCentroid();
+                double[] centroid = ana.calculCentroid();
 
-                Path.GetFileNameWithoutExtension(file);
+                Path.GetFileNameWithoutExtension(fichier);
 
-                StreamWriter s = new StreamWriter(output + Path.GetFileNameWithoutExtension(file));
+                StreamWriter s = new StreamWriter(sortie + Path.GetFileNameWithoutExtension(fichier));
 
                 s.WriteLine("rms zrc rollof centroid");
 
