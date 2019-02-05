@@ -8,23 +8,39 @@ namespace musique{
 
     class Program{
 
+        
+
         static void Main(string[] args){
 
+            string path = "./songs/";
+            string output = "./output/";
+            
             Analyzer ana = new Analyzer(1.0);
 
-            ana.loadSong("test.mp3");
-            ana.computeFFT();
+            string[] files = null;
+            files = Directory.GetFiles(path);
             
-            double[] res = ana.computeSpectralCentroid();
+            foreach(string file in files){
+                 ana.loadSong(file);
+                 ana.computeFFT();
 
-            StreamWriter s = new StreamWriter("test.txt");
+                double[] rms = ana.computeRMS();
+                double[] zrc = ana.computeZCR();
+                double[] rolloff = ana.computeRollOff(0.85);
+                double[] centroid = ana.computeSpectralCentroid();
 
-            for(int i = 0; i < res.Length; i++){
-                s.WriteLine(res[i]);
+                Path.GetFileNameWithoutExtension(file);
+
+                StreamWriter s = new StreamWriter(output + Path.GetFileNameWithoutExtension(file));
+
+                s.WriteLine("rms zrc rollof centroid");
+
+                for(int i = 0; i < rms.Length; i++){
+                    s.WriteLine("{0} {1} {2} {3}", rms[i],zrc[i],rolloff[i],centroid[i]);
+                }
+
+                s.Close();
             }
-
-            s.Close();
-            
         }
     }
 }
