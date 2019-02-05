@@ -89,5 +89,18 @@ namespace musique{
             return res;
         }
 
+        public double[] computeRollOff(double gama){
+             int stepSize = (int)(_sampleRate * _timeWindow);
+            int N = _samples.Length / stepSize;
+
+            double[] res = new double[N];
+
+            for(int i = 0; i < N ; i++){
+                res[i] = Processing.SpectralRollOff(_fft[i], gama, (int)_sampleRate);
+            }
+
+            return res;
+        }
+
     }
 }
