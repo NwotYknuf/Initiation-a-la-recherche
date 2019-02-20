@@ -93,6 +93,25 @@ namespace musique{
             return res;
         }
 
+        public double[] calculeSpread(double[] centroid = null){
+            int tailleFenetre = (int)(_Fe * _fenetre);
+            int N = _signal.Length / tailleFenetre;
+
+            double[] res = new double[N];
+
+            for(int i = 0; i < N ; i++){
+
+                if(centroid != null){
+                    res[i] = Traitements.Spread(_fft[i], (int)_Fe, centroid[i]);
+                }
+                else{
+                    res[i] = Traitements.Spread(_fft[i], (int)_Fe);
+                }
+            }
+
+            return res;
+        }
+
         public double[] calculeRollOff(double gama){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
