@@ -6,7 +6,7 @@ namespace musique{
     public static class Traitements{
         
         /*
-         * Calcul la transformée de fourrier d'un signal réel
+         * Calcule la transformée de fourrier d'un signal réel
          * Retourne la transformée de fourrier pour les fréquences de 0 Hz à Fe/2 (La partie -Fe/2 à 0 est ignorée)
          * Ou Fe est la fréquence d'échantillonage du signal 
          */
@@ -35,7 +35,7 @@ namespace musique{
         }
 
         /*
-         * Calcul l'énergie moyenne du signal sur une période donnée
+         * Calcule l'énergie moyenne du signal sur une période donnée
          */
         public static double RMS(double [] signal, int debut, int tailleFenetre){
 
@@ -49,7 +49,7 @@ namespace musique{
         }
 
         /*
-         * Calcul le nombre de fois que ou le signal est passé par zéro sur une période donnée
+         * Calcule le nombre de fois que ou le signal est passé par zéro sur une période donnée
          */
         public static double ZRC(double [] signal, int debut, int tailleFenetre){
                 
@@ -65,7 +65,7 @@ namespace musique{
         }
 
         /*
-         * Calcul la "fréquence moyenne" pour une transformée de fourrier donnée
+         * Calcule la "fréquence moyenne" pour une transformée de fourrier donnée
          */
         public static double Centroid(double[] fft, int Fe){
 
@@ -84,7 +84,25 @@ namespace musique{
         }
 
         /*
-         * Calcul la fréquence à partir de laquelle Energie_cumulée > gama * Energie_totale
+         * Calcule "l'écart type de fréquence" pour une transformée de fourrier donnée
+         */
+        public static double Spread(double[] fft, int Fe){
+            
+            double centroid = Traitements.Centroid(fft,Fe);
+            double somme = 0.0;
+            double sommePonderee = 0.0;
+
+            for(int i = 0; i < fft.Length; i++){
+                double m = (double)Fe/(2*fft.Length) * i;
+                somme += fft[i];
+                sommePonderee += fft[i] * (m - centroid) * (m - centroid);
+            }
+
+            return Math.Sqrt(sommePonderee / somme);
+        }
+
+        /*
+         * Calcule la fréquence à partir de laquelle Energie_cumulée > gama * Energie_totale
          */
         public static double RollOff(double[] fft, double gama, int Fe){
 
