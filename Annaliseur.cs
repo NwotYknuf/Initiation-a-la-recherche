@@ -1,9 +1,9 @@
 
-using CSCore;
-using CSCore.Codecs;
-
 namespace musique{
 
+    /*
+     * Classe qui va annaliser un signal audio en le découpant en seguements
+     */
     public class Annaliseur{
 
         private double _Fe; /* Fréquence d'échantillonage */
@@ -15,28 +15,22 @@ namespace musique{
         public int Fe{
             get{ return (int)_Fe; }
         }
-
-        public Annaliseur(double fenetre){
+        /*
+         * fenetre : longeure de la fenetre d'analyse en secondes
+         * Fe : fréquence d'echantillonage en Hz
+         * signal : tableau contenant les échantillons du signal audio
+         */
+        public Annaliseur(double fenetre, double Fe, double[] signal){
             _fenetre = fenetre;
+            _Fe = Fe;
+            _signal = signal;
         }
 
-        public void chargeChanson(string chemin){
-            IWaveSource source = CodecFactory.Instance.GetCodec(chemin);
-            ISampleSource  signal = source.ToSampleSource();
-            _Fe = source.WaveFormat.SampleRate;
-            signal = signal.ToMono();
-            int size = (int)signal.Length;
-            float[] valeurs = new float[size];
-            signal.Read(valeurs, 0, size);
-            _signal = new double[size];
-            for(int i = 0; i < size;i++){
-                _signal[i] = (double)valeurs[i];
-            }
-
-
-        }
-
-        public void calculFFT(){
+        /*
+         * Calcule la transformée de fourrier du signal audio
+         * C'est un calcul nécessaire pour pouvoir calculer les critères fréquenciels
+         */
+        public void calculeFFT(){
             
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
@@ -48,7 +42,10 @@ namespace musique{
             }
         }
 
-        public double[] calculZCR(){
+        /*
+         * Calcule le Zero Crossing Rate pour chaque fenetre
+         */
+        public double[] calculeZCR(){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -62,7 +59,12 @@ namespace musique{
 
         }
 
-         public double[] computeRMS(){
+
+        /*
+         * Calcule le Root Mean Square du signal audio
+         * Les données sont normalisée entre 0 et 1
+         */
+        public double[] calculeRMS(){
              int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -72,11 +74,13 @@ namespace musique{
                 res[i] = Traitements.RMS(_signal, i * tailleFenetre, tailleFenetre);
             }
 
+            Stats.normalise(ref res);
+
             return res;
 
         }
 
-        public double[] calculCentroid(){
+        public double[] calculeCentroid(){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -89,7 +93,7 @@ namespace musique{
             return res;
         }
 
-        public double[] computeRollOff(double gama){
+        public double[] calculeRollOff(double gama){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
