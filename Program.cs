@@ -8,24 +8,29 @@ namespace musique{
 
     class Program{        
 
+        
         static void Main(string[] args){
 
-            string dossier = "./songs/";
+            string dossier = "D:/Musique/";
             string sortie = "./output/";
-            
-            Annaliseur ana = new Annaliseur(1.0);
 
             string[] fichiers = null;
             fichiers = Directory.GetFiles(dossier);
             
             foreach(string fichier in fichiers){
-                 ana.chargeChanson(fichier);
-                 ana.calculFFT();
 
-                double[] rms = ana.computeRMS();
-                double[] zrc = ana.calculZCR();
-                double[] rolloff = ana.computeRollOff(0.85);
-                double[] centroid = ana.calculCentroid();
+                double[] signal;
+                double Fe;
+
+                SongLoadder.chargeChanson(fichier, out Fe, out signal);
+
+                Annaliseur ana = new Annaliseur(1.0, Fe, signal);
+                ana.calculeFFT();
+
+                double[] rms = ana.calculeRMS();
+                double[] zrc = ana.calculeZCR();
+                double[] rolloff = ana.calculeRollOff(0.85);
+                double[] centroid = ana.calculeCentroid();
 
                 Path.GetFileNameWithoutExtension(fichier);
 
@@ -36,7 +41,7 @@ namespace musique{
                 for(int i = 0; i < rms.Length; i++){
                     s.WriteLine("{0} {1} {2} {3}", rms[i],zrc[i],rolloff[i],centroid[i]);
                 }
-
+                
                 s.Close();
             }
         }
