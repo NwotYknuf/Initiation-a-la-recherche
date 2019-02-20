@@ -2,7 +2,7 @@
 namespace musique{
 
     /*
-     * Classe qui va annaliser un signal audio en le découpant en seguements
+     * Classe qui va annaliser un signal audio en le découpant en segments
      */
     public class Annaliseur{
 
