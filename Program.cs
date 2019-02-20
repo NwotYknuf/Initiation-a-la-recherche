@@ -31,6 +31,7 @@ namespace musique{
                 double[] zrc = ana.calculeZCR();
                 double[] rolloff = ana.calculeRollOff(0.85);
                 double[] centroid = ana.calculeCentroid();
+                double[] spread = ana.calculeSpread(centroid);
 
                 Path.GetFileNameWithoutExtension(fichier);
 
@@ -39,7 +40,7 @@ namespace musique{
                 s.WriteLine("rms zrc rollof centroid");
 
                 for(int i = 0; i < rms.Length; i++){
-                    s.WriteLine("{0} {1} {2} {3}", rms[i],zrc[i],rolloff[i],centroid[i]);
+                    s.WriteLine("{0} {1} {2} {3} {4}", rms[i],zrc[i],rolloff[i],centroid[i],spread[i]);
                 }
                 
                 s.Close();
