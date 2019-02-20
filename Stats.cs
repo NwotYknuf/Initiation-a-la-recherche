@@ -55,7 +55,7 @@ namespace musique{
                 sum += (donnes[i] - moyenne)*(donnes[i] - moyenne);
             }
 
-            return sum / donnes.Length;
+            return Math.Sqrt(sum / donnes.Length);
         }
 
 
