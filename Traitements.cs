@@ -85,10 +85,14 @@ namespace musique{
 
         /*
          * Calcule "l'écart type de fréquence" pour une transformée de fourrier donnée
+         * Il est possible de donner la Centroid si elle a déjà été calculée
          */
-        public static double Spread(double[] fft, int Fe){
+        public static double Spread(double[] fft, int Fe, double centroid = double.NegativeInfinity){
             
-            double centroid = Traitements.Centroid(fft,Fe);
+            if(centroid == double.NegativeInfinity){
+                centroid = Traitements.Centroid(fft,Fe);
+            }
+    
             double somme = 0.0;
             double sommePonderee = 0.0;
 
