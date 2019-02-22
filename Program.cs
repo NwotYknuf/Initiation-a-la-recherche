@@ -17,7 +17,12 @@ namespace musique{
             string[] fichiers = null;
             fichiers = Directory.GetFiles(dossier);
             
+            StreamWriter s = new StreamWriter(sortie + "stats");
+            s.WriteLine("Song rms(medianne) rms(ecart type) zrc(mediane) zrc(ecart type) centroid(medianne) centroid(ecart type) spread(mediane) spread(ecart type)");
+
             foreach(string fichier in fichiers){
+
+                Console.WriteLine("Analyse de : {0}", Path.GetFileNameWithoutExtension(fichier));
 
                 double[] signal;
                 double Fe;
@@ -33,18 +38,16 @@ namespace musique{
                 double[] centroid = ana.calculeCentroid();
                 double[] spread = ana.calculeSpread(centroid);
 
-                Path.GetFileNameWithoutExtension(fichier);
-
-                StreamWriter s = new StreamWriter(sortie + Path.GetFileNameWithoutExtension(fichier));
-
-                s.WriteLine("rms zrc rollof centroid");
-
-                for(int i = 0; i < rms.Length; i++){
-                    s.WriteLine("{0} {1} {2} {3} {4}", rms[i],zrc[i],rolloff[i],centroid[i],spread[i]);
-                }
-                
-                s.Close();
+                s.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7} {8}",
+                    Path.GetFileNameWithoutExtension(fichier),
+                    Stats.mediane(rms), Stats.ecart_type(rms),
+                    Stats.mediane(zrc), Stats.ecart_type(zrc),
+                    Stats.mediane(centroid), Stats.ecart_type(centroid),
+                    Stats.mediane(spread), Stats.ecart_type(spread)
+                    );
             }
+
+            s.Close();
         }
     }
 }
