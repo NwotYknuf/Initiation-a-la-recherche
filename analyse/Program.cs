@@ -26,7 +26,10 @@ namespace musique{
                 new ParallelOptions { MaxDegreeOfParallelism = 4 }, 
                 (fichier) => {
                 
-                if(Path.GetExtension(fichier) == ".mp3" || Path.GetExtension(fichier) == ".flac"){
+                if(
+                    Path.GetExtension(fichier) == ".mp3" || 
+                    Path.GetExtension(fichier) == ".flac" ||
+                    Path.GetExtension(fichier) == ".wav"){
 
                     string id = SongLoadder.getArtist(fichier) + " - " + SongLoadder.getTitle(fichier);
 
