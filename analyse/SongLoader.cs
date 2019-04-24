@@ -1,6 +1,7 @@
 
 using CSCore;
 using CSCore.Codecs;
+using TagLib;
 
 namespace musique{
 
@@ -19,5 +20,16 @@ namespace musique{
                 res[i] = (double)valeurs[i];
             }
         }
+
+        public static string getArtist(string path){
+            TagLib.File tagFile = TagLib.File.Create(path);
+            return tagFile.Tag.FirstAlbumArtist;
+        }
+
+        public static string getTitle(string path){
+            TagLib.File tagFile = TagLib.File.Create(path);
+            return tagFile.Tag.Title;
+        }
+
     }
 }

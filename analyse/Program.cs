@@ -21,7 +21,9 @@ namespace musique{
 
             foreach(string fichier in fichiers){
 
-                Console.WriteLine("Analyse de : {0}", Path.GetFileNameWithoutExtension(fichier));
+                string id = SongLoadder.getArtist(fichier) + " - " + SongLoadder.getTitle(fichier);
+
+                Console.WriteLine("Analyse de : {0}", id);
 
                 double[] signal;
                 double Fe;
@@ -38,7 +40,7 @@ namespace musique{
                 double[] spread = ana.Spread(centroid);
 
                 s.WriteLine("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}",
-                    Path.GetFileNameWithoutExtension(fichier),
+                    id,
                     Stats.mediane(rms), Stats.ecart_type(rms),
                     Stats.mediane(zrc), Stats.ecart_type(zrc),
                     Stats.mediane(centroid), Stats.ecart_type(centroid),
