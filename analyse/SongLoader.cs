@@ -23,7 +23,14 @@ namespace musique{
 
         public static string getArtist(string path){
             TagLib.File tagFile = TagLib.File.Create(path);
-            return tagFile.Tag.FirstAlbumArtist;
+
+            string artist = "inconnu";
+
+            if(tagFile.Tag.FirstAlbumArtist != "" && tagFile.Tag.FirstAlbumArtist != null){
+                artist = tagFile.Tag.FirstAlbumArtist;
+            }
+
+            return artist;
         }
 
         public static string getTitle(string path){
