@@ -1,9 +1,4 @@
-analyse/output/*
-
+analyse/bin/*
 analyse/.vscode/*
-analyse/
-bin/*
-analyse/
-obj/*
-
+analyse/obj/*
 *.txt
