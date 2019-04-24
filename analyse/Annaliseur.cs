@@ -27,6 +27,13 @@ namespace musique{
         }
 
         /*
+         * retourne la longueure de la chanson
+         */
+        public int songLenght(){
+            return (int)(_signal.Length/_Fe);
+        }
+
+        /*
          * Calcule la transformée de fourrier du signal audio
          * C'est un calcul nécessaire pour pouvoir calculer les critères fréquenciels
          */
@@ -45,7 +52,7 @@ namespace musique{
         /*
          * Calcule le Zero Crossing Rate pour chaque fenetre
          */
-        public double[] calculeZCR(){
+        public double[] ZCR(){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -64,7 +71,7 @@ namespace musique{
          * Calcule le Root Mean Square du signal audio
          * Les données sont normalisée entre 0 et 1
          */
-        public double[] calculeRMS(){
+        public double[] RMS(){
              int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -80,7 +87,7 @@ namespace musique{
 
         }
 
-        public double[] calculeCentroid(){
+        public double[] Centroid(){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -93,7 +100,7 @@ namespace musique{
             return res;
         }
 
-        public double[] calculeSpread(double[] centroid = null){
+        public double[] Spread(double[] centroid = null){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
@@ -112,7 +119,7 @@ namespace musique{
             return res;
         }
 
-        public double[] calculeRollOff(double gama){
+        public double[] Rollof(double gama){
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;
 
