@@ -3,6 +3,8 @@ using CSCore;
 using CSCore.Codecs;
 using System.IO;
 using System.Numerics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace musique{
 
@@ -19,8 +21,7 @@ namespace musique{
             
             StreamWriter s = new StreamWriter(sortie + "stats");
 
-            foreach(string fichier in fichiers){
-
+            Parallel.ForEach(fichiers, new ParallelOptions { MaxDegreeOfParallelism = 4 }, (fichier) => {
                 string id = SongLoadder.getArtist(fichier) + " - " + SongLoadder.getTitle(fichier);
 
                 Console.WriteLine("Analyse de : {0}", id);
@@ -47,7 +48,7 @@ namespace musique{
                     Stats.mediane(spread), Stats.ecart_type(spread),
                     ana.songLenght()
                     );
-            }
+            });
 
             s.Close();
         }
