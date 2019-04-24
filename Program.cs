@@ -18,7 +18,7 @@ namespace musique{
             fichiers = Directory.GetFiles(dossier);
             
             StreamWriter s = new StreamWriter(sortie + "stats");
-            s.WriteLine("Song rms(medianne) rms(ecart type) zrc(mediane) zrc(ecart type) centroid(medianne) centroid(ecart type) spread(mediane) spread(ecart type)");
+            //s.WriteLine("Song rms(medianne) rms(ecart type) zrc(mediane) zrc(ecart type) centroid(medianne) centroid(ecart type) spread(mediane) spread(ecart type)");
 
             foreach(string fichier in fichiers){
 
@@ -38,7 +38,7 @@ namespace musique{
                 double[] centroid = ana.calculeCentroid();
                 double[] spread = ana.calculeSpread(centroid);
 
-                s.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7} {8}",
+                s.WriteLine("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}",
                     Path.GetFileNameWithoutExtension(fichier),
                     Stats.mediane(rms), Stats.ecart_type(rms),
                     Stats.mediane(zrc), Stats.ecart_type(zrc),
