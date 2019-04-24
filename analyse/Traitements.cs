@@ -79,7 +79,7 @@ namespace musique{
                 sommePonderee += m * fft[i];
             }
 
-            return sommePonderee / somme;
+            return somme == 0 ? 0 : sommePonderee / somme;
             
         }
 
@@ -102,7 +102,7 @@ namespace musique{
                 sommePonderee += fft[i] * (m - centroid) * (m - centroid);
             }
 
-            return Math.Sqrt(sommePonderee / somme);
+            return somme == 0 ? 0 : Math.Sqrt(sommePonderee / somme);
         }
 
         /*
