@@ -50,7 +50,7 @@ estimators = [
     ["Spectral", SpectralClustering(n_clusters = CLUSTERS)]
 ]
 
-embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
+embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 2000)
 train = data[:,1:].astype(float)
 train = Normalizer().fit_transform(train)
 rep = embeding.fit_transform(train)
@@ -72,5 +72,17 @@ for name,estimator in estimators:
     plt.title(name)
     plt.scatter(rep[:,0],rep[:,1], c = labels/max(labels))
     plot += 1
+
+    #sortie text
+    output = open(name, 'w')
+    
+    out = np.vstack((data[:,0], labels))
+    out = np.transpose(out)
+    out = out[out[:,1].argsort()]
+    
+    for name,categ in out:
+        output.write(name + "   " + categ + "\n")
+
+    output.close()
 
 plt.show()
