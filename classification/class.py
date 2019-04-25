@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 import io
 import math
 
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.manifold import TSNE
+from sklearn.cluster import AgglomerativeClustering,KMeans
 
 def getData(path):
-    file = open(path)
+    file = open(path, encoding="utf8")
     data = []
     #get values
     for line in file :
@@ -31,18 +32,39 @@ def getData(path):
     return data
 
 PATH = "D:\\Code\musique\\analyse\\output\\stats"
-CLUSTERS = 11
+CLUSTERS = 8
 
 data = getData(PATH)
-estimator = AgglomerativeClustering(n_clusters = CLUSTERS, linkage = 'ward')
 
-#Fit data on everything except the first column
-estimator.fit(data[:,1:])
+estimators = [ 
+    [ "k-means" ,KMeans(n_clusters = CLUSTERS) ],
+    [ "Agglo", AgglomerativeClustering(n_clusters = CLUSTERS, linkage = 'ward')]
+]
 
-labels = estimator.labels_
-res = np.c_[data[:,0], labels]
+colors = ['b','g','r','c','m','y','k', '0.5']
 
-#Sort data by clusters
-res = res[res[:,1].argsort()]
+embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
+X = data[:,1:].astype(float)
+X = embeding.fit_transform(X)
 
-print(res)
+plot = 1
+plt.figure(1)
+
+for name,estimator in estimators:
+
+    #Fit data on everything except the first column
+    estimator.fit(data[:,1:])
+
+    labels = estimator.labels_
+
+    #Représentation des données en 2D
+
+    plt.subplot(len(estimators),1,plot)
+    plt.title(name)
+
+    for i in range(0,len(X)-1):
+        plt.scatter(X[i,0],X[i,1], c = colors[int(labels[i])])
+
+    plot += 1
+
+plt.show()
