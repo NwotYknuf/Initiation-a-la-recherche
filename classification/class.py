@@ -7,7 +7,7 @@ import colorsys
 
 from sklearn.manifold import TSNE
 from sklearn.cluster import AgglomerativeClustering,KMeans, AffinityPropagation, Birch, DBSCAN, FeatureAgglomeration, MiniBatchKMeans, MeanShift, SpectralClustering
-
+from sklearn.preprocessing import Normalizer
 def getData(path):
     file = open(path, encoding="utf8")
     data = []
@@ -33,6 +33,7 @@ def getData(path):
     data = np.array(data)
     return data
 
+
 PATH = "D:\\Code\musique\\analyse\\output\\stats"
 CLUSTERS = 8
 
@@ -43,15 +44,16 @@ estimators = [
     [ "Agglo", AgglomerativeClustering(n_clusters = CLUSTERS, linkage = 'ward')],
     [ "Affinity", AffinityPropagation()],
     #[ "Birch", Birch(n_clusters = CLUSTERS)],
-    [ "DBSCAN", DBSCAN()],
+    #[ "DBSCAN", DBSCAN(eps=0.3, min_samples=10)],
     ["MiniBatch", MiniBatchKMeans(n_clusters = CLUSTERS)],
     #["MeanShift", MeanShift()],
     ["Spectral", SpectralClustering(n_clusters = CLUSTERS)]
 ]
 
 embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
-X = data[:,1:].astype(float)
-X = embeding.fit_transform(X)
+train = data[:,1:].astype(float)
+train = Normalizer().fit_transform(train)
+rep = embeding.fit_transform(train)
 
 plot = 1
 plt.figure(1)
@@ -59,7 +61,7 @@ plt.figure(1)
 for name,estimator in estimators:  
 
     #Fit data on everything except the first column
-    estimator.fit(data[:,1:])
+    estimator.fit(train)
 
     #get labels
     labels = estimator.labels_
@@ -68,7 +70,7 @@ for name,estimator in estimators:
     plt.subplot(3,2,plot)
 
     plt.title(name)
-    plt.scatter(X[:,0],X[:,1], c = labels/max(labels))
+    plt.scatter(rep[:,0],rep[:,1], c = labels/max(labels))
     plot += 1
 
 plt.show()
