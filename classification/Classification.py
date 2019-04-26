@@ -5,7 +5,7 @@ import math
 import json
 
 from sklearn.manifold import TSNE
-from sklearn.cluster import AgglomerativeClustering,KMeans
+from sklearn.cluster import AgglomerativeClustering, KMeans, SpectralClustering
 
 # Lecture du fichier data.json
 def getData(path):
@@ -39,31 +39,33 @@ data = np.array(data)
 
 # Initialisation des modèles de classification 
 estimators = [
-    [ "k-means" ,KMeans(n_clusters = CLUSTERS) ],
-    [ "Agglo", AgglomerativeClustering(n_clusters = CLUSTERS, linkage = 'ward')]
+    [ "k-means", KMeans(n_clusters = CLUSTERS)],
+    [ "Agglo", AgglomerativeClustering(n_clusters = CLUSTERS, linkage = 'ward')],
+    [ "SpectralClustering", SpectralClustering(n_clusters = CLUSTERS, eigen_solver = 'arpack', affinity = "nearest_neighbors")]
 ]
 
 # Initialisation des paramètres d'affichage
 colors = ['b','g','r','c','m','y','k', '0.5']
 embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
-X = data[:,1:].astype(float)
-X = embeding.fit_transform(X)
+dataClusturing = data[:,1:].astype(float)
+dataClusturing = embeding.fit_transform(dataClusturing)
 
 plot = 1
 plt.figure(1)
+resultat = []
 
 # Application des algorithmes de classification
 for name, estimator in estimators:
-    
+
     # Fit data on everything except the first column
-    estimator.fit(data[:,1:])
+    estimator.fit(dataClusturing)
     labels = estimator.labels_
 
     # Représentation des données en 2D
     plt.subplot(len(estimators), 1, plot)
     plt.title(name)
-    for i in range(0, len(X)-1):
-        plt.scatter(X[i,0], X[i,1], c = colors[int(labels[i])])
+    for i in range(0, len(dataClusturing)-1):
+        plt.scatter(dataClusturing[i,0], dataClusturing[i,1], c = colors[int(labels[i])])
     plot += 1
 
 plt.show()
