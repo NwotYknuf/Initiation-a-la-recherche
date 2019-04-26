@@ -37,7 +37,7 @@ namespace musique{
          * Calcule la transformée de fourrier du signal audio
          * C'est un calcul nécessaire pour pouvoir calculer les critères fréquenciels
          */
-        public void calculeFFT(){
+        public void calculerFFT(){
             
             int tailleFenetre = (int)(_Fe * _fenetre);
             int N = _signal.Length / tailleFenetre;

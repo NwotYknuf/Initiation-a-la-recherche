@@ -7,7 +7,7 @@ namespace musique{
 
     public static class SongLoadder{
 
-        public static void chargeChanson(string chemin, out double Fe, out double[] res){
+        public static void chargerChanson(string chemin, out double Fe, out double[] res){
             IWaveSource source = CodecFactory.Instance.GetCodec(chemin);
             ISampleSource  signal = source.ToSampleSource();
             Fe = source.WaveFormat.SampleRate;
