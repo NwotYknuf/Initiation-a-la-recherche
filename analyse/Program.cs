@@ -13,7 +13,7 @@ namespace musique{
 
         static void Main(string[] args){
 
-            string dossier = "../data/Musiques";    // Emplacement de la musiques à analyser
+            string dossier = "../../Musiques";    // Emplacement de la musiques à analyser
             string sortie = "../data/data.json";    // Emplacement du fichier résultat
 
             string json = "{";
