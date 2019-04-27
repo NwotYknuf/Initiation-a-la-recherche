@@ -79,9 +79,9 @@ for name, estimator in estimators:
     # text output of clusters
     out = np.vstack((data[:,0], labels.astype(int)))
     out = np.transpose(out)
-    out = out[out[:,1].argsort()]
+    out = out.sort(key = lambda x : x[1])
 
-    output = open("..\\data\\" + name, "w")
+    output = open("..\\data\\" + name, "w", encoding='utf8')
     
     for name,categ in out:
         output.write(name + "   " + categ + "\n")
