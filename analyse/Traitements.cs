@@ -128,5 +128,16 @@ namespace musique{
 
         }
 
+        public static double FFTrms(double[] fft){
+
+            double somme = 0.0;
+
+            for(int i = 0; i < fft.Length; i++){
+                somme += fft[i] * fft[i];
+            }
+
+            return Math.Sqrt(somme / fft.Length);
+        }
+
     }
 }

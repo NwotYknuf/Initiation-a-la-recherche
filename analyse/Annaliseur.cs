@@ -1,3 +1,4 @@
+using System;
 
 namespace musique{
 
@@ -131,6 +132,49 @@ namespace musique{
 
             return res;
         }
+
+        /*
+         * Filtre la transformée de fourrier pour ne garder que les 
+         * fréquences entre freq_debut et freq_fin
+         */
+        public void filtrePasseBande(double freq_debut, double freq_fin){
+
+            double pas = (double)Fe/(2*_fft[0].Length);
+
+            for(int i = 0; i < _fft.Length; i++){
+                for(int j = 0; j < _fft[i].Length;j++){
+                    if(pas * j < freq_debut || pas * j > freq_fin){
+                        _fft[i][j] = 0;
+                    }
+                }
+            }
+        }
+
+        /*
+         * Récupère la transformé de fourrier de la n-ième fenetre
+         */
+        public double[] getFFT(int n){
+            return (double[])_fft[n].Clone();
+        }
+
+        /*
+         * Calcule le root mean square du signal à partir de la fft
+         */
+         public double[] FFTrms(){
+            
+            int tailleFenetre = (int)(_Fe * _fenetre);
+            int N = _signal.Length / tailleFenetre;
+
+            double[] res = new double[N];
+
+            for(int i = 0; i < N ; i++){
+                res[i] = Traitements.FFTrms(_fft[i]);
+            }
+
+            Stats.normalise(ref res);
+
+            return res;
+         }
 
     }
 }
