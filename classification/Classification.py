@@ -66,6 +66,10 @@ for name, estimator in estimators:
     plt.title(name)
     for i in range(0, len(dataClusturing)-1):
         plt.scatter(dataClusturing[i,0], dataClusturing[i,1], c = colors[int(labels[i])])
+        resultat.append("Cluster : " + str(labels[i]) + " > " + data[i,0])
     plot += 1
 
+resultat.sort()
+for res in resultat:
+    print(res)
 plt.show()

@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Json;
 
 namespace musique{
 
-    class Program{        
+    class Program{
 
         static void Main(string[] args){
 
@@ -20,6 +20,9 @@ namespace musique{
             string[] fichiers = null;
             fichiers = Directory.GetFiles(dossier);
             StreamWriter sw = new StreamWriter(sortie);
+
+            int i = 0;
+            Console.WriteLine(" > Nombre de fichiers dans le dossier : " + Directory.GetFiles(dossier).Length);
             
             Parallel.ForEach(
                 Directory.EnumerateFiles(dossier, "*.*", SearchOption.AllDirectories), 
@@ -71,10 +74,12 @@ namespace musique{
                     stream.Position = 0;  
                     StreamReader sr = new StreamReader(stream);
                     json += "\"" + ds.id + "\" : " + sr.ReadToEnd() + ",\n";
+                    i++;
                 }
             });
             sw.WriteLine(json + "\"\":\"\"}");
             sw.Close();
+            Console.WriteLine("\n---\nAnalyse terminée.\nNombre de fichier anaylsés : " + i + " sur " + Directory.GetFiles(dossier).Length);
         }
     }
 }
