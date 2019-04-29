@@ -46,7 +46,7 @@ namespace musique{
             return donnes[ind];
         }
 
-        public static double ecart_type(double[] donnes){
+        public static double variance(double[] donnes){
             double sum = 0.0;
 
             double moyenne = Stats.moyenne(donnes);
@@ -55,7 +55,11 @@ namespace musique{
                 sum += (donnes[i] - moyenne)*(donnes[i] - moyenne);
             }
 
-            return Math.Sqrt(sum / donnes.Length);
+            return sum/donnes.Length;
+        }
+
+        public static double ecart_type(double[] donnes){
+            return Math.Sqrt(variance(donnes));
         }
 
 
