@@ -5,17 +5,18 @@ import math
 import json
 
 from sklearn.manifold import TSNE
-from sklearn.cluster import AgglomerativeClustering, KMeans, SpectralClustering
+from sklearn.decomposition import PCA
+from sklearn.cluster import AgglomerativeClustering, KMeans, SpectralClustering, AffinityPropagation, MiniBatchKMeans
 
 # Lecture du fichier data.json
 def getData(path):
-    with open(path) as json_data:
+    with open(path, encoding="utf8") as json_data:
         data_dict = json.load(json_data)
     data_str = json.dumps(data_dict)
     return json.loads(data_str)
 
 PATH = "..\\data\\data.json"    # Chemin vers le fichier data.json
-CLUSTERS = 8                    # Nombre de clusters
+CLUSTERS = 20                    # Nombre de clusters
 
 # Désérialisation du fichier JSON
 dataJSON = getData(PATH)
@@ -38,17 +39,25 @@ for dic in dataJSON:
 data = np.array(data)
 
 # Initialisation des modèles de classification 
-estimators = [
-    [ "k-means", KMeans(n_clusters = CLUSTERS)],
+estimators = [ 
+    [ "k-means" ,KMeans(n_clusters = CLUSTERS) ],
     [ "Agglo", AgglomerativeClustering(n_clusters = CLUSTERS, linkage = 'ward')],
-    [ "SpectralClustering", SpectralClustering(n_clusters = CLUSTERS, eigen_solver = 'arpack', affinity = "nearest_neighbors")]
+    [ "Affinity", AffinityPropagation()],
+    #[ "Birch", Birch(n_clusters = CLUSTERS)],
+    #[ "DBSCAN", DBSCAN(eps=0.3, min_samples=10)],
+    #["MiniBatch", MiniBatchKMeans(n_clusters = CLUSTERS)],
+    #["MeanShift", MeanShift()],
+    ["Spectral", SpectralClustering(n_clusters = CLUSTERS)]
 ]
 
-# Initialisation des paramètres d'affichage
-colors = ['b','g','r','c','m','y','k', '0.5']
-embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
-dataClusturing = data[:,1:].astype(float)
-dataClusturing = embeding.fit_transform(dataClusturing)
+# Initialisation de t-SNE pour visualiser les donnés en 2D
+#embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
+#training_data = data[:,1:].astype(float)
+
+# Réduction des composantes principales avec PCA
+pca = PCA(n_components = 2 )
+training_data = data[:,1:].astype(float)
+training_data = pca.fit_transform(training_data)
 
 plot = 1
 plt.figure(1)
@@ -57,19 +66,26 @@ resultat = []
 # Application des algorithmes de classification
 for name, estimator in estimators:
 
-    # Fit data on everything except the first column
-    estimator.fit(dataClusturing)
+    # Entrainement
+    estimator.fit(training_data)
     labels = estimator.labels_
 
-    # Représentation des données en 2D
-    plt.subplot(len(estimators), 1, plot)
+    # Représentation des données
+    plt.subplot(len(estimators)/2,2,plot)
     plt.title(name)
-    for i in range(0, len(dataClusturing)-1):
-        plt.scatter(dataClusturing[i,0], dataClusturing[i,1], c = colors[int(labels[i])])
-        resultat.append("Cluster : " + str(labels[i]) + " > " + data[i,0])
+    plt.scatter(training_data[:,0],training_data[:,1], c = labels/max(labels))
     plot += 1
 
-resultat.sort()
-for res in resultat:
-    print(res)
+    # text output of clusters
+    out = np.vstack((data[:,0], labels.astype(int)))
+    out = np.transpose(out)
+    out = out.sort(key = lambda x : x[1])
+
+    output = open("..\\data\\" + name, "w", encoding='utf8')
+    
+    for name,categ in out:
+        output.write(name + "   " + categ + "\n")
+
+    output.close()
+
 plt.show()
