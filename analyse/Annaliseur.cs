@@ -151,6 +151,23 @@ namespace musique{
         }
 
         /*
+         * Filtre la transformée de fourrier pour ne garder que les 
+         * fréquences avant freq_debut et après freq_fin
+         */
+        public void filtreCoupeBande(double freq_debut, double freq_fin){
+
+            double pas = (double)Fe/(2*_fft[0].Length);
+
+            for(int i = 0; i < _fft.Length; i++){
+                for(int j = 0; j < _fft[i].Length;j++){
+                    if(pas * j > freq_debut && pas * j < freq_fin){
+                        _fft[i][j] = 0;
+                    }
+                }
+            }
+        }
+
+        /*
          * Récupère la transformé de fourrier de la n-ième fenetre
          */
         public double[] getFFT(int n){
