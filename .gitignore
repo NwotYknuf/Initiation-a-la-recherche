@@ -2,3 +2,7 @@ analyse/bin/*
 analyse/.vscode/*
 analyse/obj/*
 *.txt
+data/Affinity
+data/Agglo
+data/k-means
+data/Spectral
