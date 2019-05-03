@@ -4,6 +4,7 @@ import io
 import math
 import json
 
+from sklearn.preprocessing import Normalizer
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.cluster import AgglomerativeClustering, KMeans, SpectralClustering, AffinityPropagation, MiniBatchKMeans
@@ -50,14 +51,23 @@ estimators = [
     ["Spectral", SpectralClustering(n_clusters = CLUSTERS)]
 ]
 
+training_data = data[:,1:].astype(float)
+
+# Normalisation des données
+norm = Normalizer()
+training_data = norm.fit_transform(training_data)
+
 # Initialisation de t-SNE pour visualiser les donnés en 2D
 #embeding = TSNE(n_components = 2, perplexity = 50, n_iter = 5000)
 #training_data = data[:,1:].astype(float)
+#training_data = embeding.fit_transform(training_data)
 
 # Réduction des composantes principales avec PCA
 pca = PCA(n_components = 2 )
-training_data = data[:,1:].astype(float)
+
 training_data = pca.fit_transform(training_data)
+
+print(pca)
 
 plot = 1
 plt.figure(1)
@@ -79,7 +89,7 @@ for name, estimator in estimators:
     # text output of clusters
     out = np.vstack((data[:,0], labels.astype(int)))
     out = np.transpose(out)
-    out = out.sort(key = lambda x : x[1])
+    out = out[np.argsort(out[:,1])]
 
     output = open("..\\data\\" + name, "w", encoding='utf8')
     
