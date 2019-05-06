@@ -1,6 +1,7 @@
 analyse/bin/*
 analyse/.vscode/*
 analyse/obj/*
+data/beat/*
 *.txt
 data/Affinity
 data/Agglo
@@ -10,3 +11,4 @@ data/Affinity
 data/Agglo
 data/k-means
 data/Spectral
+analyse/low
