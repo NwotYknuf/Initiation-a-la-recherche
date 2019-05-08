@@ -8,15 +8,19 @@ using System.Threading;
 namespace musique{
 
     class Test{        
-
+/*
         static void Main(string[] args){
 
+            string dossier = @"D:\Musique";
+
             Parallel.ForEach(
-                Directory.EnumerateFiles(@"D:\Musique", "*.*", SearchOption.AllDirectories), 
+                Directory.EnumerateFiles(dossier, "*.*", SearchOption.AllDirectories), 
                 new ParallelOptions { MaxDegreeOfParallelism = 4 }, 
                 (fichier) => {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             
-                if(
+                     if(
                     Path.GetExtension(fichier) == ".mp3" || 
                     Path.GetExtension(fichier) == ".flac" ||
                     Path.GetExtension(fichier) == ".wav"){
@@ -29,53 +33,67 @@ namespace musique{
                     SongLoadder.chargerChanson(fichier, out Fe, out signal);
                     string id = SongLoadder.getArtist(fichier) + " - " + SongLoadder.getTitle(fichier);
 
-                    StreamWriter sw = new StreamWriter("../data/beat/" + Path.GetFileNameWithoutExtension(fichier));                
 
-                    Annaliseur annaliseur = new Annaliseur(0.01, Fe, signal);
-                    annaliseur.calculerFFT();
+                    double fenetre = 0.005;
 
-                    //isoler les fréquences basses
+                    Annaliseur low = new Annaliseur(fenetre, Fe, signal);
+                    Annaliseur mid = new Annaliseur(fenetre, Fe, signal);
+                    Annaliseur high = new Annaliseur(fenetre, Fe, signal);
+                    low.calculerFFT();
+                    mid.calculerFFT();
+                    high.calculerFFT();
 
-                    annaliseur.filtreCoupeBande(0.0, 25.0);
-                    annaliseur.filtreCoupeBande(75.0,32000.0);
+                    //Couper les fréquences
+                    low.filtreCoupeBande(300.0,25000.0);
+
+                    mid.filtreCoupeBande(0.0,300.0);
+                    mid.filtreCoupeBande(2000.0,25000.0);
+
+                    high.filtreCoupeBande(0.0, 2000.0 );
 
                     //Calculer l'énergie du signal sur des fenêtres de 10 ms
-                    double[] rms = annaliseur.FFTrms();
+                    double[] low_energy = low.FFTrms();
+                    double[] mid_energy = mid.FFTrms();
+                    double[] high_energy = high.FFTrms();
                 
                     //Detecter la présence de pics d'énergie
+                    int N = (int)(1.0/fenetre);
 
-                    int n_echantillons = 50;
-                    double seuil_ecart_type = 0.1;
-                    double seuil_energie = 0.6;
+                    int duree =(int)(10/fenetre);
+                    int debut = (int) (60/fenetre);
 
-                    for(int i = n_echantillons/2; i < rms.Length - n_echantillons/2;i++){
+                    try{
+                        StreamWriter sw = new StreamWriter("../data/beat/" + Path.GetFileNameWithoutExtension(fichier));                
 
-                        //moyenne d'énergie sur une seconde
-                        double moyenne = Stats.moyenne(rms.Skip(i-n_echantillons/2).Take(n_echantillons).ToArray());
-                        //ecart_type d'énergie sur une seconde
-                        double ecart_type = Stats.ecart_type(rms.Skip(i-n_echantillons/2).Take(n_echantillons).ToArray());
+                        for(int i = debut + N/2; i < debut + duree + N/2 ;i++){
+                            //moyenne d'énergie sur une seconde
+                            double low_mean = Stats.moyenne(low_energy.Skip(i-N/2).Take(N).ToArray());
+                            double mid_mean = Stats.moyenne(mid_energy.Skip(i-N/2).Take(N).ToArray());
+                            double high_mean = Stats.moyenne(high_energy.Skip(i-N/2).Take(N).ToArray());
+                            double low_var = Stats.ecart_type(low_energy.Skip(i-N/2).Take(N).ToArray());
+                            double mid_var = Stats.ecart_type(mid_energy.Skip(i-N/2).Take(N).ToArray());
+                            double high_var = Stats.ecart_type(high_energy.Skip(i-N/2).Take(N).ToArray());
 
-                        //Si l'écart type est inférieur au seuil on ignore la section (ecart type faible = pas de pic)
-                        if(ecart_type > seuil_ecart_type){
-                            sw.WriteLine("{0}\t{1}", 
-                                rms[i].ToString(System.Globalization.CultureInfo.InvariantCulture), 
-                                rms[i] > (1 + seuil_energie) * moyenne ? 1:0);
+                            sw.WriteLine(
+                                "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}", 
+                                low_energy[i], low_mean, low_var,
+                                mid_energy[i], mid_mean, mid_var,
+                                high_energy[i], high_mean,high_var);
                         }
-                        else{
-                            sw.WriteLine("{0}\t0", rms[i].ToString(System.Globalization.CultureInfo.InvariantCulture));
-                        }
+
+                        sw.Close();
+
+                    }
+                    catch{
+                        Console.Write(fichier + " trop court !");
+                    }
 
                     }
 
-                    sw.Close();
-                }
-
             });
-
-        
 
         }
         
-        
+     */   
     }
 }
