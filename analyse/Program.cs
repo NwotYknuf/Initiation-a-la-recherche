@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
 
 namespace musique{
-
+/*
     class Program{
 
         static void Main(string[] args){
@@ -81,5 +81,5 @@ namespace musique{
             sw.Close();
             Console.WriteLine("\n---\nAnalyse terminée.\nNombre de fichier anaylsés : " + i + " sur " + Directory.GetFiles(dossier).Length);
         }
-    }
+    }*/
 }

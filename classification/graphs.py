@@ -17,7 +17,7 @@ def getData(path):
     return json.loads(data_str)
 
 PATH = "..\\data\\data.json"    # Chemin vers le fichier data.json
-CLUSTERS = 15                    # Nombre de clusters
+CLUSTERS = 20                    # Nombre de clusters
 
 # Désérialisation du fichier JSON
 dataJSON = getData(PATH)
@@ -37,26 +37,23 @@ for dic in dataJSON:
     tabTemp.append((float)(dataJSON[dic]['ecarType_spread']))
     tabTemp.append((float)(dataJSON[dic]['songLenght']))
     data.append(tabTemp)
+
 data = np.array(data)
 
-# Initialisation des modèles de classification 
-estimator = KMeans(n_clusters = CLUSTERS)
-training_data = np.vstack([data[:,1].astype(float), data[:,3].astype(float)]).transpose()
+training_data = data[:,1:].astype(float)
 
-estimator.fit(training_data)
-labels = estimator.labels_
+titles = ["mediane rms", "ecart rms", "mediane zcr", "ecar zcr", "mediane centoid", "ecart centroid" "mediane spead", "ecart spead", "durée"]
 
-# text output of clusters
-out = np.vstack((data[:,0], labels.astype(int)))
-out = np.transpose(out)
-out = out[np.argsort(out[:,1])]
+for i in range(1,2):
+    v = training_data[:,i]
+    n = data[:,0]
+    n = n[v.argsort()]
+    v = v[v.argsort()]
 
-output = open("..\\data\\kmeans", "w", encoding='utf8')
-for name,categ in out:
-    output.write(name + "   " + categ + "\n")
-output.close()
+    plt.figure(titles[i])
+    plt.subplot(1,2,1)
+    plt.plot(v, n)
+    plt.subplot(1,2,2)
+    plt.boxplot(training_data[:,0])
 
-plt.figure("Classification")
-plt.scatter(training_data[:,0], training_data[:,1], c = labels/max(labels))
-plt.plot()
 plt.show()

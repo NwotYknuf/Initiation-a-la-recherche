@@ -2,6 +2,7 @@ analyse/bin/*
 analyse/.vscode/*
 analyse/obj/*
 data/beat/*
+data/test/*
 *.txt
 data/Affinity
 data/Agglo

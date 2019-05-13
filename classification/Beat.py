@@ -4,7 +4,7 @@ import math
 import io
 
 
-file = open("D:\\Code\\musique\\data\\beat\\06 Still Take You Home")
+file = open("D:\\Code\\musique\\data\\beat\\07 Call Me")
 
 low_energy = []
 low_mean = []
@@ -62,7 +62,7 @@ def detect_beat (rms, mean, var) :
     beat_var = math.sqrt(beat_var/N)
 
     for i in range(0, len(rms)):
-        if beat[i] > (1.5 + beat_var) * beat_mean :
+        if beat[i] > beat_mean - beat_var:
             beat[i] = 1.0
         else:
             beat[i] = 0.0
@@ -76,14 +76,17 @@ high_beat, high_beat_mean, low_beat_var = detect_beat(high_energy,high_mean,high
 
 plt.subplot(3,1,1)
 plt.plot(low_energy)
-plt.plot(low_beat, color = 'r')
+plt.plot(low_mean)
+# plt.plot(low_beat, color = 'r')
 
 plt.subplot(3,1,2)
 plt.plot(mid_energy)
-plt.plot(mid_beat, color = 'r')
+plt.plot(mid_mean)
+# plt.plot(mid_beat, color = 'r')
 
 plt.subplot(3,1,3)
 plt.plot(high_energy)
-plt.plot(high_beat, color = 'r')
+plt.plot(high_mean)
+# plt.plot(high_beat, color = 'r')
 
 plt.show()
