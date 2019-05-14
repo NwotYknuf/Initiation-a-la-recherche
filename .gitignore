@@ -13,3 +13,10 @@ data/Agglo
 data/k-means
 data/Spectral
 analyse/low
+rapport/IR_rapport.aux
+rapport/IR_rapport.log
+rapport/IR_rapport.fls
+rapport/IR_rapport.fdb_latexmk
+rapport/IR_rapport.blg
+rapport/IR_rapport.bbl
+rapport/IR_rapport.synctex.gz
