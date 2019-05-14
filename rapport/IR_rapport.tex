@@ -10,16 +10,35 @@
 
 \encadrant{Alexendre Blansché}
 
-\motcle{Annalyse de signal, Musique, Classification, Non supervisé}
+\motcle{Analyse de signal, Musique, Classification, Non supervisé}
+
+\resume{
+La recommandation musicale se repose à la foi sur l’étiquetage des genres musicaux des 
+chansons et sur les données personnelles des auditeurs. Dans cet article, nous vous proposons de classer 
+automatiquement les items en fonction de leurs caractéristiques communes basées sur l’analyse du signal audio. 
+Différentes méthodes de clustering ont été testées pour pouvoir déterminer une classification cohérente des 
+chansons tout en étant indépendante du contexte de ces dernières. Les résultats montrent que les algorithmes de 
+clustering peuvent classifier efficacement des genres musicaux qui peuvent s’avérer différents des genres 
+traditionnellement admis et permettent de concevoir des systèmes de recommandation.
+}
 
 \begin{document}
 
 \section{Introduction}
+L'explosion des plateformes d'écoute en ligne nous expose à de plus en plus de musique. Les algorithmes de
+recommandations deviennent donc de plus en plus importants pour guider les utilisateurs vers la musique qui leur 
+plaît. Les approches actuelles se basent souvent sur les habitudes d'écoutes de nombreux utilisateurs ou des 
+métadonnées, mais ne considèrent pas vraiment le côté musical. Comme les recommandations sont basées sur les 
+habitudes d'écoute, elles limitent la découverte de nouveaux artistes, et exacerbent les artistes déjà beaucoup 
+écoutés. Nous souhaitons par ce projet, proposer un système de classification qui se baserait sur la musique en
+elle-même. Notre approche utilise donc des critères d'analyse du signal pour classifier des musiques et ne se 
+base pas sur les métadonnées des chansons. Nous espérons ainsi créer un système de recommandation qui prend en 
+compte la musique plutôt que les habitudes d'écoute.
 
 \section{Etat de l'art}
-La musique étant massivement présente en format numérique, et le besoin de classer les différentes musiques
- étant toujours aussi présent, les chercheurs ont développé différentes techniques permettant d’automatiser 
- le processus.
+La musique étant massivement présente en format numérique, et le besoin de classer les différentes musiques 
+étant toujours aussi présent, les chercheurs ont développé différentes techniques permettant d’automatiser 
+le processus.
 
 \subsection{L’analyse et la classification musicale}
 \paragraph{}
@@ -247,34 +266,16 @@ les 9 valeurs extraites des différentes analyses :
 \subsection{Mise en oeuvre}
 Pour mettre en oeuvre ces algorithmes, nous avons développé un programme en Python et utilisons une bibliothèque 
 libre d’apprentissage automatique : Scikit-learn. La communication avec le programme d’analyse se fait via un 
-fichier JSON. Nous obtenons les résultats suivants :
+fichier JSON. Nous obtenons les résultats présentés en figure \ref{clusters}.
 
-\begin{figure}[ht]
-    \centering
-
-    \caption{Clusters formés par K-means avec et sans PCA.}
-    \label{clsuter_kmeans}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-
-    \caption{Clusters formés par Agglomerative Clustering avec et sans PCA.}
-    \label{clsuter_agglo}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-
-    \caption{Clusters formés par Affinity Propagation avec et sans PCA.}
-    \label{clsuter_affinity}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-
-    \caption{Clusters formés par Spectral Clustering avec et sans PCA.}
-    \label{clsuter_spectral}
+\begin{figure}
+        \centering
+        \includegraphics[scale = 0.30]{images/cluster_kmean.jpg}
+        \includegraphics[scale = 0.30]{images/cluster_agglo.jpg}
+        \includegraphics[scale = 0.30]{images/cluster_affinity.jpg}
+        \includegraphics[scale = 0.30]{images/cluster_spectral.jpg}
+        \caption{Clusters formés par diférents algorithmes sans PCA et avec PCA.}
+        \label{clusters}
 \end{figure}
 
 Les données présentent, à gauche, une représentation en 2D des clusters obtenus en appliquant les algorithmes 
@@ -354,13 +355,15 @@ Mais tous les résultats de ces tests sont à prendre avec prudence du fait du f
 l’expérience.
 
 \paragraph{}
-La classification de la musique grâce à des algorithmes de clustering semble possible. La faible efficacité de 
-certains algorithmes peut s’expliquer de deux manières différentes. Premièrement, le faible nombre de données 
-(675 chansons classifiées) peut affecter significativement les résultats potentiels et ces algorithmes pourraient 
-affiner leur classification avec un jeu de données plus conséquent. Deuxièmement la réduction des données à une 
-simple médiane et écart-type alors que les valeurs peuvent être très différentes à divers moments de la musique 
-(pour rappel, 4 valeurs sont calculées en étudiant le signal de chaque fichier audio divisé en fenêtres de 1 
-seconde).
+
+La classification de la musique grâce à des algorithmes de clustering semble possible. Cependant plusieurs améliorations 
+pourraient donner des résultats plus solides. Premièrement, le faible nombre de données (675 chansons classifiées) 
+peut affecter significativement les résultats potentiels et ces algorithmes pourraient affiner leur 
+classification avec un jeu de données plus conséquent. Deuxièmement la réduction des données à une simple 
+médiane et écart-type alors que les valeurs peuvent être très différentes à divers moments de la musique (pour 
+rappel, 4 valeurs sont calculées en étudiant le signal de chaque fichier audio divisé en fenêtres de 1 seconde). 
+Appliquer ces méthodes de clustering sur des données plus représentatifs des fichiers audios pourrait se montrer 
+assez fructueux.
 
 \section{Conclusion}
 Le travail mené au cours de cette étude a permis d’obtenir un système de classement des genres musicaux basé sur 
