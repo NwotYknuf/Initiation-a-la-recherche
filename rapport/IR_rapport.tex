@@ -1,16 +1,16 @@
-\documentclass[soumission]{ir}
+\documentclass{ir}
 
 \titre{Initiation à la recherche \\Classification de musique non supervisée}
 
-\auteur{Lafille Julien et Ouali Kouceilal}
+\auteur{Lafille Julien et Ouali Kouceila}
 
 \titrecourt{Classification de musique non supervisée}
 
-\nomcourt{J. Lafille et K. Oualil}
+\nomcourt{J. Lafille et K. Ouali}
 
 \encadrant{Alexendre Blansché}
 
-\motcle{Analyse de signal, Musique, Classification, Non supervisé}
+\motcle{Analyse de signal, Musique, Classification non supervisé}
 
 \resume{
 La recommandation musicale se repose à la foi sur l’étiquetage des genres musicaux des 
@@ -24,16 +24,37 @@ traditionnellement admis et permettent de concevoir des systèmes de recommandat
 
 \begin{document}
 
+\pagebreak
+\tableofcontents
+\pagebreak
+
 \section{Introduction}
-L'explosion des plateformes d'écoute en ligne nous expose à de plus en plus de musique. Les algorithmes de
-recommandations deviennent donc de plus en plus importants pour guider les utilisateurs vers la musique qui leur 
-plaît. Les approches actuelles se basent souvent sur les habitudes d'écoutes de nombreux utilisateurs ou des 
-métadonnées, mais ne considèrent pas vraiment le côté musical. Comme les recommandations sont basées sur les 
-habitudes d'écoute, elles limitent la découverte de nouveaux artistes, et exacerbent les artistes déjà beaucoup 
-écoutés. Nous souhaitons par ce projet, proposer un système de classification qui se baserait sur la musique en
-elle-même. Notre approche utilise donc des critères d'analyse du signal pour classifier des musiques et ne se 
-base pas sur les métadonnées des chansons. Nous espérons ainsi créer un système de recommandation qui prend en 
-compte la musique plutôt que les habitudes d'écoute.
+\paragraph{}
+L’explosion des plateformes d’écoute en ligne nous donne accès à de plus en plus de musique. 
+Les algorithmes de recommandations deviennent donc de plus en plus importants pour guider les 
+utilisateurs vers la musique qui leur plaît. Les approches actuelles se basent souvent sur les 
+habitudes d’écoutes de nombreux utilisateurs ou des métadonnées, mais ne considèrent pas 
+vraiment le côté purement musical. Comme les recommandations sont basées sur les habitudes d’écoute, elles limitent la découverte de nouveaux artistes, et exacerbent les artistes déjà beaucoup écoutés. Nous souhaitons par ce projet, proposer un système de classification qui se baserait sur la
+musique en elle-même. Notre approche utilise donc des critères d’analyse du signal pour 
+classifier des musiques et ne se base pas sur les métadonnées des chansons. Nous espérons 
+ainsi créer un système de recommandation qui prend en compte la musique plutôt que les 
+habitudes d’écoute. L’efficacité de cette approche dépend grandement de la capacité des 
+algorithmes de clusterings à regrouper des musiques de différents genres mais qui restent 
+cohérents et qui correspondent aux goûts des auditeurs. Et nous verrons qu’ils découvrent des 
+genres musicaux indépendants des constructions déjà existantes. Un cluster correspond à un 
+“univers musical” dont la notion est propre à chacun de ces algorithmes. 
+
+\paragraph{}
+Il se pose alors une 
+problématique à laquelle nous tenterons de répondre, est-il possible d’utiliser des méthodes 
+de clustering pour classifier les différents genres musicaux ? Ce qui permettra ensuite de 
+créer un système de recommandation performant. Nous développerons, tout d’abord, un état de 
+l’art de l’analyse musicale et des systèmes de recommandation traditionnels. Ensuite, nous 
+déterminerons les critères qui devront permettre de décrire efficacement un fichier audio en 
+se basant sur son signal. Les données recueillies seront utilisées par différents algorithmes 
+de classification non supervisée afin de donner un classement cohérent des genres “découverts” 
+et enfin, nous testerons l’efficacité de cette méthode et analyserons les résultats.
+
 
 \section{Etat de l'art}
 La musique étant massivement présente en format numérique, et le besoin de classer les différentes musiques 
