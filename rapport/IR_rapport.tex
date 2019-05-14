@@ -125,7 +125,8 @@ dans le temps. Cette pression de l’air est captée par nos oreilles ou bien un
 continue, pour transformer ce signal continu en information on utiliser une méthode d'échantillonnage pour 
 discrétiser l’information, on a alors un signal numérique.
 
-\begin{figure}
+\begin{figure}[ht]
+    \centering
     \includegraphics[scale=0.7]{images/Sampling-of-audio-signal.png}
     \caption{Echantillonage d'un signal continu}
 \end{figure}
@@ -151,7 +152,7 @@ Nous pouvons maintenant calculer deux de nos critères, le premier étant le zer
 passage par zéro. Ce critère permet d’avoir une estimation du timbre du signal (un signal aigu passera par 
 zéro plus fréquemment qu’un signal grave).
 \begin{equation}
-    ZCR = \frac{1}{N}*\sum_{n = 1}^{N} \delta( x_{n-1}*x_n \leqslant 0 )
+    ZCR = \frac{1}{N}*\sum_{n = 1}^{N} \delta( x_{n-1}.x_n \leqslant 0 )
 \end{equation}
 
 \noindent{Avec $x_i$ le i-ème echantillon du signal, $N$ le nombre d'échantillons et : }\\
@@ -162,27 +163,203 @@ $\delta(x)=\begin{cases}
 \end{cases}$
 
 \paragraph{}
-Le second critère est le root mean square : ce critère permet de calculer l'énergie moyenne du signal sur une période.
+Le second critère est le root mean square : ce critère permet de calculer l'énergie moyenne du signal sur 
+une période.
 \begin{equation}
-    RMS = \sqrt{\frac{1}{N}*\sum_{n = 0}^{N} x_n^2}
+    RMS = \sqrt{\frac{1}{N}.\sum_{n = 0}^{N-1} x_n^2}
 \end{equation}
 
 \subsection{Critères fréquentiels}
+Nos deux autres critères s’intéressent à l’aspect fréquentiel d’un signal.Tout signal peut être décomposé 
+comme une somme de fonctions sinusoïdales avec différentes fréquences. La transformation de Fourier est un 
+outil nous permettant d’effectuer un passage du domaine temporel au domaine fréquentiel. Dans le domaine 
+temporel on observe l’intensité du signal à un moment donné. Dans le domaine fréquentiel on observe 
+l’intensité d’une fréquence sur la totalité du signal. L’intensité de la  k-ième fréquence d’un signal s à N 
+échantillons est donnée par :
+
+\begin{equation}
+    s_k = \sum_{n = 0}^{N-1} x_n.e^{-2 i \pi k. \frac{n}{N}}
+    \qquad\text{pour $0 \leqslant k < N$}
+\end{equation}
+
+ou la k-ième fréquence vaut : $-\frac{Fe}{2} (\frac{2k}{N} - 1)$
+
+\paragraph{}
+Les intensités obtenues sont donc des nombres complexes. Pour nos analyses on pourra utiliser $|s_k|$. La 
+moitié de ces intensités représente des fréquences négatives. Dans le cas d'un signal réel comme le notre 
+il existe une symétrie parfaite entre les fréquences négatives et positives. Il est important de conserver 
+les fréquences négatives pour effectuer la transformée inverse, mais pour analyser le signal nous pouvons 
+nous permettre de les ignorer. Nous considérons donc les fréquences dans la plage 0 à $\frac{Fe}{2}$ Hz.
+
+\begin{figure}[ht]
+    \includegraphics[scale=0.7]{images/Fourier.png}
+    \caption{Passage du domaine temporel au domaine fréquenciel}
+\end{figure}
+
+\paragraph{}
+Nous pouvons ainsi calculer nos deux derniers critères, à commencer par la Spectral Centroid : Elle représente la 
+fréquence moyenne du signal sur la période analysée.
+
+\begin{equation}
+    Centroid = \frac{ \sum_{k = 0}^{T-1} \frac{Fe}{2} \frac{k}{T} * s_k}{\sum_{k=0}^{T-1} s_k}
+    \qquad \textit{avec T le nombre de fréquences}
+\end{equation}
+
+Le dernier critère que nous calculons est le Spectral Spread. Ce critère représente l'écart de fréquence du
+signal sur la période analysée.
+
+\begin{equation}
+    Spread = \frac{ \sum_{k = 0}^{T-1} \frac{Fe}{2} \frac{k}{T} (s_k - Centroid)^2}{\sum_{k=0}^{T-1} s_k}
+    \qquad \textit{avec T le nombre de fréquences}
+\end{equation}
+
+Ces calculs sont réalisés par un programme que nous avons écrit dans le language C\#. Ces calculs nous donnent 
+donc quatre vecteurs d’une longueur égale à la durée de la chanson en seconde. Nous utiliserons ces données 
+pour effectuer notre clustering par la suite.
 
 \section{Classification}
+Notre but étant d’obtenir une classification “naturelle” des chansons, et d’obtenir un ensemble d’univers 
+musicaux cohérents. Nous utilisons donc des algorithmes de classifications non supervisées avec les données 
+recueillies précédemment. Nous considérons pour chaque chanson la médiane et l’écart type de chaque critère
+ainsi que sa durée.
 
 \subsection{Méthodes adoptées}
+Nous avons testé 4 algorithmes de clustering pour classifier les différents genres musicaux avec, en entrée 
+les 9 valeurs extraites des différentes analyses :
+\begin{itemize}
+    \item{\textbf{K-Means} : divise les items en un nombre défini de clusters de variances égales et minimisant le 
+    critère de la somme des carrés au sein d’un cluster}
+    \item {\textbf{Agglomerative Clustering} : Algorithme de classification hiérarchique à approche ascendante. 
+    Pouvant s’utiliser avec plusieurs critères de liaison : simple, moyenne, complète, ward, c’est ce dernier 
+    que nous avons choisi et qui est assez proche de la fonction objectif de K-Means mais abordée avec une 
+    approche hiérarchique agglomérative.}
+    \item{\textbf{Affinity Propagation} : classifie les données en considérant successivement les paires d’items jusqu’à 
+    convergence pour décider, ensuite, d’un ensemble de données “représentatifs”. Cet algorithme ayant la 
+    particularité de choisir lui-même le nombre de clusters pour les données fournies, nous nous sommes basés 
+    sur ses résultats pour décider du nombre de clusters pour les autres algorithmes testés.}
+    \item{\textbf{Spectral Clustering} : Classifie les items en suivant l’imbrication de la matrice d’affinité entre 
+    échantillons, suivie d’un K-Mean dans l’espace dimensionnel faible.}
+\end{itemize}
 
 \subsection{Mise en oeuvre}
+Pour mettre en oeuvre ces algorithmes, nous avons développé un programme en Python et utilisons une bibliothèque 
+libre d’apprentissage automatique : Scikit-learn. La communication avec le programme d’analyse se fait via un 
+fichier JSON. Nous obtenons les résultats suivants :
+
+\begin{figure}
+    \caption{}
+\end{figure}
+
+\begin{figure}
+    \caption{}
+\end{figure}
+
+\begin{figure}
+    \caption{}
+\end{figure}
+
+\begin{figure}
+    \caption{}
+\end{figure}
+
+Les données présentent, à gauche, une représentation en 2D des clusters obtenus en appliquant les algorithmes 
+sur les 9 données recueillies, et à droite, la régression des données après application de l’algorithme PCA 
+(Principal Component Analysis).On peut constater une forte similarité entre les clusters des différents 
+algorithmes, en particulier sans utilisation de PCA. Avec la réduction des données, les résultats sont assez 
+proches pour chacun de K-Means, Agglomerative Clustering et Affinity Propagation, avec quelques différences pour
+ les données les plus excentrées. En revanche, la classification se fait de manière différente pour Spectral 
+ Clustering (algorithme traditionnellement utilisé sur un faible nombre de clusters). Nous pouvons, ici, 
+ remarquer un grand nombre de clusters contenant peu d’items, au niveau de ce qui semble être le centre de 
+ gravité du jeu de données, englobés par un cluster beaucoup plus imposant suivi des autres clusters tout autour.
 
 \section{Résultat expérimentaux}
+Après avoir extrait les données et appliqué les algorithmes de classification non supervisés sur 675 chansons et musiques tirées 
+d’univers musicaux variés allant de While My Guitar Gently Weeps des Beatles à Ride the Lightning de Metallica 
+en passant par Diriyi de Ait Menguellet. Nous nous proposons de tester l’efficacité de la classification obtenue.
 
 \subsection{Protocole}
+L’évaluation s’est faite sur la classifiant les items avec une réduction des données grâce à PCA puis sans. Les 
+tests, réalisés sur un échantillon de 5 personnes, consistaient à tirer aléatoirement 3 morceaux d’un même 
+cluster et les faire écouter aux participants. Ensuite, chaque participant propose une chanson qu’il juge proche 
+des morceaux écoutés, et une chanson qu’il juge, au contraire, de styles différent. Nous renouvelons l’expérience 
+de chaque participant avec chaque algorithme de clustering testé.Une fois ces données recueillies, nous 
+appliquons notre programme d’analyse sur les chansons proposées et demandons à l’algorithme correspondant à la 
+réponse de prédire la classe du nouvel item afin de comparer avec les réponses des participants.
 
 \subsection{Resultats}
+\paragraph{}
+Nous avons, tout d’abord, testé nos algorithmes sans réduction des données (donc sur 9 dimensions) avons testé 
+la prédiction des chansons proposées par les participants aux tests et les avons comparé à leur appréciation. Le 
+taux de prédictions correctes pour les chansons de style jugés proches est, globalement, de 35\% et pour les 
+chansons de style jugés différent est de 100\%.
+
+
+\begin{figure}[ht]
+    \centering
+    \begin{tabular}{ccccc}
+        \phantom & K-means & Agglomerative & Affinity & Spectral\\
+        \hline
+        réussite : chansons proches & 20\%& 20\% & 20\% & 80\%\\
+        réussite : chansons différentes & 100\% & 100\% & 100\% & 100\%\\
+        \hline
+    \end{tabular}
+    \caption{Taux de réussite des algorythmes sans PCA.}
+\end{figure}
+
+\paragraph{}
+Ensuite, nous avons réalisé le même test avec le même échantillon de 5 personnes avec les résultats des 
+classification après réduction des données (en utilisant l’algorithme PCA). Cette fois-ci le taux de prédictions 
+correctes pour les chansons de style jugés proches est de 55\% et pour les chansons de style jugés différent, il 
+est de 100\%.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tabular}{ccccc}
+        \phantom & K-means & Agglomerative & Affinity & Spectral\\
+        \hline
+        réussite : chansons proches & 60\%& 60\% & 60\% & 40\%\\
+        réussite : chansons différentes & 100\% & 100\% & 100\% & 100\%\\
+        \hline
+    \end{tabular}
+    \caption{Taux de réussite des algorythmes avec PCA.}
+\end{figure}
+
+\paragraph{}
+Les résultats nous montrent que la prédiction de non-appartenance d’une chanson à un cluster jugé différent d’elle
+est tout le temps correct. Les méthodes que nous avons utilisées semblent discriminer correctement les genres très 
+différents, indépendamment de l’algorithme de classification ou de l’application ou non de PCA. En ce qui 
+concerne l'efficacité de la prédiction positive (l’item appartient à la classe), il est globalement plus 
+intéressant d’utiliser une réduction PCA , correcte dans 55\% des cas, avec K-Means, Agglomerative Clustering et 
+Affinity Propagation qui présentent des taux de prédiction corrects de 60\% chacun (contre 20\% chacun si les 
+données ne sont pas réduites). En revanche, on peut remarquer que l’algorithme Spectral Clustering est le plus 
+performant avec 80\% de taux de prédictions positives correctes quand il est utilisé sans réduction des données. 
+Mais tous les résultats de ces tests sont à prendre avec prudence du fait du faible nombre d'échantillons de 
+l’expérience.
+
+\paragraph{}
+La classification de la musique grâce à des algorithmes de clustering semble possible. La faible efficacité de 
+certains algorithmes peut s’expliquer de deux manières différentes. Premièrement, le faible nombre de données 
+(675 chansons classifiées) peut affecter significativement les résultats potentiels et ces algorithmes pourraient 
+affiner leur classification avec un jeu de données plus conséquent. Deuxièmement la réduction des données à une 
+simple médiane et écart-type alors que les valeurs peuvent être très différentes à divers moments de la musique 
+(pour rappel, 4 valeurs sont calculées en étudiant le signal de chaque fichier audio divisé en fenêtres de 1 
+seconde).
 
 \section{Conclusion}
+Le travail mené au cours de cette étude a permis d’obtenir un système de classement des genres musicaux basé sur 
+des algorithmes de classification non supervisés. Afin de produire un ensemble de critères efficaces, nous avons 
+expérimenté divers descripteurs et avons retenu les plus pertinents et ceux dont les résultats sont les plus 
+significatifs.  Les données récoltées après les analyses des fichiers audio ont pu servir à la classification des 
+différents morceaux, et comme nous avons pu nous y attendre, créé des genres assez différents de ceux que l’on 
+pourrait imaginer de prime abord. Même si les principaux styles musicaux semblent être représentés, certains 
+clusters contiennent des chansons que l’on aurait pu imaginer plus différentes. La classification résultant de 
+notre travail peut servir à étiqueter les chansons de manière plus objective, et peut permettre une 
+recommandation plus basée sur la musique aux auditeurs et moins sur les statistiques d’écoute de cette musique, 
+notamment la popularité de la chanson ou de l’artiste, l’effet de mode qui fait que l’on peut être influencé par 
+l’évolution des gout du groupe social auquel on s’identifie, ce qui permet de donner autant de chances pour des 
+artistes moins connus mais dont la musique pourrait s’avérer compatible avec les goûts de l’auditeur.
 
+\pagebreak
 
 \bibliographystyle{apalike}
 \bibliography{IR_biblio}
