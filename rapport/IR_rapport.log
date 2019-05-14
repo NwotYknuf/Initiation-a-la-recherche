@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.5.13)  14 MAY 2019 12:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.5.13)  14 MAY 2019 12:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -647,7 +647,7 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/sc' in size <9> not available
 (Font)              Font shape `T1/ptm/b/sc' tried instead on input line 131.
 \b@nomcourt=\box44
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 158--159
+Underfull \hbox (badness 10000) in paragraph at lines 159--160
 
  []
 
@@ -655,29 +655,30 @@ Underfull \hbox (badness 10000) in paragraph at lines 158--159
 <images/Fourier.png, id=30, 517.18219pt x 241.65282pt>
 File: images/Fourier.png Graphic file (type png)
 <use images/Fourier.png>
-Package pdftex.def Info: images/Fourier.png  used on input line 195.
+Package pdftex.def Info: images/Fourier.png  used on input line 197.
 (pdftex.def)             Requested size: 362.02505pt x 169.1558pt.
 \b@nomcourt=\box45
  [5 <d:/Code/musique/rapport/images/Fourier.png>] [6]
 \b@nomcourt=\box46
- [7] [8]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+ [7]
+Underfull \vbox (badness 3713) has occurred while \output is active []
 
+ [8] (d:/Code/musique/rapport/IR_rapport.bbl)
 \b@nomcourt=\box47
- [9] (d:/Code/musique/rapport/IR_rapport.bbl) [10] (d:/Code/musique/rapport/IR_rapport.aux) ) 
+ [9] (d:/Code/musique/rapport/IR_rapport.aux) ) 
 Here is how much of TeX's memory you used:
- 13658 strings out of 492616
- 223205 string characters out of 6133219
- 319453 words of memory out of 5000000
- 17286 multiletter control sequences out of 15000+600000
+ 13666 strings out of 492616
+ 223319 string characters out of 6133219
+ 319517 words of memory out of 5000000
+ 17294 multiletter control sequences out of 15000+600000
  48819 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,13n,45p,441b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
 {d:/texlive/2019/texmf-dist/fonts/enc/dvips/base/8r.enc}<d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><d:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><d:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><d:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on d:/Code/musique/rapport/IR_rapport.pdf (10 pages, 210762 bytes).
+Output written on d:/Code/musique/rapport/IR_rapport.pdf (9 pages, 210777 bytes).
 PDF statistics:
- 97 PDF objects out of 1000 (max. 8388607)
- 67 compressed objects within 1 object stream
+ 94 PDF objects out of 1000 (max. 8388607)
+ 65 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -129,6 +129,7 @@ discrétiser l’information, on a alors un signal numérique.
     \centering
     \includegraphics[scale=0.7]{images/Sampling-of-audio-signal.png}
     \caption{Echantillonage d'un signal continu}
+    \label{ex_echantillonage}
 \end{figure}
 
 \paragraph{}
@@ -192,8 +193,10 @@ les fréquences négatives pour effectuer la transformée inverse, mais pour ana
 nous permettre de les ignorer. Nous considérons donc les fréquences dans la plage 0 à $\frac{Fe}{2}$ Hz.
 
 \begin{figure}[ht]
+    \centering
     \includegraphics[scale=0.7]{images/Fourier.png}
     \caption{Passage du domaine temporel au domaine fréquenciel}
+    \label{ex_Fourier}
 \end{figure}
 
 \paragraph{}
@@ -246,20 +249,32 @@ Pour mettre en oeuvre ces algorithmes, nous avons développé un programme en Py
 libre d’apprentissage automatique : Scikit-learn. La communication avec le programme d’analyse se fait via un 
 fichier JSON. Nous obtenons les résultats suivants :
 
-\begin{figure}
-    \caption{}
+\begin{figure}[ht]
+    \centering
+
+    \caption{Clusters formés par K-means avec et sans PCA.}
+    \label{clsuter_kmeans}
 \end{figure}
 
-\begin{figure}
-    \caption{}
+\begin{figure}[ht]
+    \centering
+
+    \caption{Clusters formés par Agglomerative Clustering avec et sans PCA.}
+    \label{clsuter_agglo}
 \end{figure}
 
-\begin{figure}
-    \caption{}
+\begin{figure}[ht]
+    \centering
+
+    \caption{Clusters formés par Affinity Propagation avec et sans PCA.}
+    \label{clsuter_affinity}
 \end{figure}
 
-\begin{figure}
-    \caption{}
+\begin{figure}[ht]
+    \centering
+
+    \caption{Clusters formés par Spectral Clustering avec et sans PCA.}
+    \label{clsuter_spectral}
 \end{figure}
 
 Les données présentent, à gauche, une représentation en 2D des clusters obtenus en appliquant les algorithmes 
@@ -304,6 +319,7 @@ chansons de style jugés différent est de 100\%.
         \hline
     \end{tabular}
     \caption{Taux de réussite des algorythmes sans PCA.}
+    \label{test}
 \end{figure}
 
 \paragraph{}
@@ -322,6 +338,7 @@ est de 100\%.
         \hline
     \end{tabular}
     \caption{Taux de réussite des algorythmes avec PCA.}
+    \label{test_pca}
 \end{figure}
 
 \paragraph{}
@@ -358,8 +375,6 @@ recommandation plus basée sur la musique aux auditeurs et moins sur les statist
 notamment la popularité de la chanson ou de l’artiste, l’effet de mode qui fait que l’on peut être influencé par 
 l’évolution des gout du groupe social auquel on s’identifie, ce qui permet de donner autant de chances pour des 
 artistes moins connus mais dont la musique pourrait s’avérer compatible avec les goûts de l’auditeur.
-
-\pagebreak
 
 \bibliographystyle{apalike}
 \bibliography{IR_biblio}
